@@ -91,6 +91,7 @@ def str2int(s):
     def char2num(s):
         digits = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9}
         return digits[s]
+
     return reduce(fn, map(char2num, s))
 
 
@@ -103,7 +104,6 @@ def str2int_0(s):
 
 
 print(str2int_0('17747'))
-
 
 """
 利用map()函数，把用户输入的不规范的英文名字，变为首字母大写，其他小写的规范名字。输入：['adam', 'LISA', 'barT']，输出：['Adam', 'Lisa', 'Bart']
@@ -190,6 +190,7 @@ def str2float_0(s):
         else:
             point = point * 10
             return f + n / point
+
     return reduce(to_float, nums)
 
 
@@ -214,6 +215,7 @@ def is_odd(n):
 print(filter(is_odd, [1, 2, 3, 4, 5, 6, 7, 8, 9]))
 print(list(filter(is_odd, [1, 2, 3, 4, 5, 6, 7, 8, 9])))
 
+
 # 用 filter 求素数，素数：大于 1 的自然数，只能被自身或 1 整除。大于 1 的自然数若不是素数，则称之为合数
 
 
@@ -235,7 +237,7 @@ def primes():
     while True:
         n = next(it)
         yield n
-        # 过滤后的序列赋值回 it
+        # 将生成的无限序列赋予 filter，然后将过滤的序列替换掉当前的无限序列，然后 next 直到达到约束条件
         it = filter(_not_divisible(n), it)
 
 
@@ -244,3 +246,74 @@ for n in primes():
         print(n)
     else:
         break
+
+"""
+练习
+回数是指从左向右读和从右向左读都是一样的数，例如 12321，909。请利用 filter() 筛选出回数：
+"""
+
+
+def is_palindrome(n):
+    t = 0
+    tmp = n
+    while tmp:
+        # 每次赋值对 tmp 取余，t 从 0 开始进位，每次 * 10
+        t = t * 10 + tmp % 10
+        # // 表示去除小数表示（整除）
+        tmp = tmp // 10
+    return t == n
+
+
+# 测试:
+output = filter(is_palindrome, range(0, 1000))
+print('1~1000:', list(output))
+if list(filter(is_palindrome, range(0, 200))) == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33, 44, 55, 66, 77, 88, 99, 101,
+                                                  111, 121, 131, 141, 151, 161, 171, 181, 191]:
+    print('测试成功!')
+else:
+    print('测试失败!')
+
+"""
+排序算法：sorted
+排序的核心是比较元素的大小，对于数字来说可以直接比较，但如果是字符串或者 dict，其比较过程必须通过函数抽象出来
+"""
+
+print(sorted([36, -6, 7, 1, 10]))
+# key 指定函数将作用于 list 的每一个元素，并根据 key 函数返回结果进行排序
+print(sorted([-36, -6, 7, 1, -10], key=abs))
+
+# 字符串排序，默认第一个字符按照 ascll 码表（编码表，定义数字代表相关字符）排序
+print(sorted(['bob', 'Zoo', 'are', 'Credit']))
+
+# 忽略大小写排序
+print(sorted(['bob', 'Zoo', 'are', 'Credit'], key=str.lower))
+
+# 反向排序 reverse（反转）
+print(sorted(['bob', 'Zoo', 'are', 'Credit'], key=str.lower, reverse=True))
+
+"""
+练习
+假设我们用一组tuple表示学生名字和成绩：
+L = [('Bob', 75), ('Adam', 92), ('Bart', 66), ('Lisa', 88)]
+请用sorted()对上述列表分别按名字排序：
+再按照成绩从高到低排序
+"""
+
+L = [('Bob', 75), ('Adam', 92), ('Bart', 66), ('Lisa', 88)]
+
+
+def by_name(t):
+    return t[0]
+
+
+L2 = sorted(L, key=by_name)
+print(L2)
+
+
+def by_score(t):
+    # 负数
+    return -t[1]
+
+
+L2 = sorted(L, key=by_score)
+print(L2)
