@@ -203,3 +203,44 @@ else:
 filter 函数
 用于过滤序列，和 map 类似，也是接收一个函数和序列，filter 不同的是将函数作用于每个元素后返回 True 或 False
 """
+
+
+# 过滤偶数
+def is_odd(n):
+    return n % 2 == 1
+
+
+# filter 返回的是个惰性序列，要强迫 filter 完成计算结果可以使用 list 获取所有结果并返回
+print(filter(is_odd, [1, 2, 3, 4, 5, 6, 7, 8, 9]))
+print(list(filter(is_odd, [1, 2, 3, 4, 5, 6, 7, 8, 9])))
+
+# 用 filter 求素数，素数：大于 1 的自然数，只能被自身或 1 整除。大于 1 的自然数若不是素数，则称之为合数
+
+
+def _odd_iter():
+    n = 1
+    while True:
+        n = n + 2
+        yield n
+
+
+def _not_divisible(n):
+    return lambda x: x % n > 0
+
+
+def primes():
+    yield 2
+    # 获取一个无限序列
+    it = _odd_iter()
+    while True:
+        n = next(it)
+        yield n
+        # 过滤后的序列赋值回 it
+        it = filter(_not_divisible(n), it)
+
+
+for n in primes():
+    if n < 100:
+        print(n)
+    else:
+        break
