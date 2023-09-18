@@ -173,6 +173,7 @@ def str2float(s):
     return int_res + decimal_res / power(len(list_decimal))
 
 
+# 参考解法
 def str2float_0(s):
     char_dict = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '.': -1}
     nums = map(lambda x: char_dict[x], s)
@@ -197,3 +198,8 @@ if abs(str2float('123.456') - 123.456) < 0.00001:
     print('测试成功!')
 else:
     print('测试失败!')
+
+"""
+filter 函数
+用于过滤序列，和 map 类似，也是接收一个函数和序列，filter 不同的是将函数作用于每个元素后返回 True 或 False
+"""
